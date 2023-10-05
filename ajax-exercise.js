@@ -48,7 +48,7 @@ function iTunesSearch(evt) {
   evt.preventDefault();
   const searchTerm = document.querySelector("#search-term").value;
   const formData = {'term': searchTerm}
-  const queryStr = new URLSearchParams(formData).toString()
+  const queryStr = new URLSearchParams(formData).toString().toLowerCase()
   const url = `https://itunes.apple.com/search?${queryStr}`
 
   axios.get(url)
