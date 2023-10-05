@@ -3,7 +3,10 @@ import axios from 'axios';
 // PART 1: Show Dog Photo
 
 function showDogPhoto(evt) {
-  // TODO: get a random photo from the Dog API and show it in the #dog-image div
+  axios.get('https://dog.ceo/api/breeds/image/random')
+  .then((res => {
+    document.querySelector('#dog-image').innerHTML = `<img src="${res.data.message}">`
+  }))
 }
 
 document.querySelector('#get-dog-image').addEventListener('click', showDogPhoto);
@@ -12,8 +15,11 @@ document.querySelector('#get-dog-image').addEventListener('click', showDogPhoto)
 
 function showWeather(evt) {
   const zipcode = document.querySelector('#zipcode-field').value;
+  axios.get(`/weather.txt?zipcode=${zipcode}`)
+  .then((res) => {
+    document.querySelector('#weather-info').innerText = res.data
+  })
 
-  // TODO: request weather with that URL and show the forecast in #weather-info
 }
 
 document.querySelector('#weather-button').addEventListener('click', showWeather);
@@ -21,9 +27,18 @@ document.querySelector('#weather-button').addEventListener('click', showWeather)
 // PART 3: Order Cookies
 
 function orderCookies(evt) {
-  // TODO: Need to preventDefault here, because we're listening for a submit event!
-  // TODO: show the result message after your form
-  // TODO: if the result code is ERROR, make it show up in red (see our CSS!)
+  evt.preventDefault()
+  const cookieType = document.querySelector('#cookie-type-field').value
+  const qty = document.querySelector('#qty-field').value
+  axios.post('/order-cookies.json', {cookieType: cookieType, qty: qty})
+  .then((res => {
+    document.querySelector('#order-status').innerText = res.data.message
+    if (res.data.resultCode === "ERROR") {
+      document.querySelector('#order-status').style.color = "red"
+    } else {
+      document.querySelector('#order-status').style.color = "black"
+    }
+  }))
 }
 document.querySelector('#order-form').addEventListener('submit', orderCookies);
 

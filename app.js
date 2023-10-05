@@ -3,7 +3,7 @@ import ViteExpress from 'vite-express';
 import bodyParser from 'body-parser';
 
 const app = express();
-const port = 8000;
+const port = 6969;
 ViteExpress.config({ printViteDevServerHost: true });
 
 app.use(express.urlencoded({ extended: false }));
@@ -24,8 +24,11 @@ app.get('/', (req, res) => {
 
 app.get('/weather.txt', (req, res) => {
   const zipcode = req.query.zipcode;
-  // TODO: Get the weather for this zipcode and return the forecast if available.
-  // If not, return the default forecast.
+  if (WEATHER[zipcode]) {
+    res.send(WEATHER[zipcode].forecast)
+  } else {
+    res.send(DEFAULT_FORECAST)
+  }
 })
 
 app.post('/order-cookies.json', (req, res) => {
